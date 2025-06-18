@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   MessageCircle, 
@@ -16,7 +16,6 @@ import {
   Menu,
   X
 } from 'lucide-react';
-import { useState } from 'react';
 
 const HomePage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -80,6 +79,7 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Navigation */}
       <nav className="bg-white shadow-sm border-b border-slate-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
@@ -133,11 +133,10 @@ const HomePage = () => {
         </div>
       </nav>
 
+      {/* Hero Section */}
       <section className="bg-gradient-to-br from-blue-50 via-white to-slate-50 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            
-            
             <h1 className="text-5xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
               AI-Powered HR Assistant
               <span className="block text-blue-600">for Modern Workplaces</span>
@@ -169,7 +168,7 @@ const HomePage = () => {
         </div>
       </section>
 
-     
+      {/* Stats Section */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -183,7 +182,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      
+      {/* Features Section */}
       <section id="features" className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -209,7 +208,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      
+      {/* About Section */}
       <section id="about" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -270,7 +269,7 @@ const HomePage = () => {
         </div>
       </section>
 
-     
+      {/* Testimonials Section */}
       <section id="testimonials" className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -306,7 +305,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      
+      {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-blue-600 to-blue-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold text-white mb-6">
@@ -337,7 +336,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      
+      {/* Footer */}
       <footer className="bg-slate-900 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8">

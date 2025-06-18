@@ -2,46 +2,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MessageCircle, Send, User, Building2, LogOut, Menu, X, Calendar, Clock, DollarSign, MapPin, Mail, UserCheck, Briefcase, Home, ArrowLeft } from 'lucide-react';
 
-interface Message {
-  id: string;
-  text: string;
-  sender: 'user' | 'bot';
-  timestamp: Date;
-}
-
-interface Employee {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  department: string;
-  manager: string;
-  joinDate: string;
-  location: string;
-  leaveBalance: {
-    casual: number;
-    sick: number;
-    earned: number;
-  };
-  salary: {
-    base: number;
-    ctc: number;
-  };
-}
-
-interface Organization {
-  id: string;
-  name: string;
-  plan: string;
-}
-
-const organizations: Organization[] = [
+const organizations = [
   { id: '1', name: 'Site Crafter', plan: 'Basic' },
   { id: '2', name: 'BMS college', plan: 'Standard' },
   { id: '3', name: 'National college', plan: 'Enterprise' }
 ];
 
-const employees: { [key: string]: Employee } = {
+const employees = {
   '1': {
     id: 'TCI_EMP002',
     name: 'test1_employee',
@@ -82,9 +49,9 @@ const employees: { [key: string]: Employee } = {
 
 const HRAssistant = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [selectedOrg, setSelectedOrg] = useState<Organization>(organizations[0]);
-  const [currentEmployee, setCurrentEmployee] = useState<Employee>(employees['1']);
-  const [messages, setMessages] = useState<Message[]>([
+  const [selectedOrg, setSelectedOrg] = useState(organizations[0]);
+  const [currentEmployee, setCurrentEmployee] = useState(employees['1']);
+  const [messages, setMessages] = useState([
     {
       id: '1',
       text: `Hello ${employees['1'].name}! I'm test1, your AI HR assistant. I can help you with leave balances, company policies, salary information, and more. What would you like to know?`,
@@ -94,7 +61,7 @@ const HRAssistant = () => {
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [showSidebar, setShowSidebar] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -102,8 +69,8 @@ const HRAssistant = () => {
 
   useEffect(scrollToBottom, [messages]);
 
-  const handleLogin = (orgId: string) => {
-    const org = organizations.find(o => o.id === orgId)!;
+  const handleLogin = (orgId) => {
+    const org = organizations.find(o => o.id === orgId);
     const employee = employees[orgId];
     
     setSelectedOrg(org);
@@ -118,7 +85,7 @@ const HRAssistant = () => {
     }]);
   };
 
-  const generateBotResponse = (userMessage: string): string => {
+  const generateBotResponse = (userMessage) => {
     const message = userMessage.toLowerCase();
     
     if (message.includes('leave') && (message.includes('balance') || message.includes('left'))) {
@@ -175,7 +142,6 @@ const HRAssistant = () => {
       return `Your Profile:\n• Name: ${currentEmployee.name}\n• Email: ${currentEmployee.email}\n• Role: ${currentEmployee.role}\n• Department: ${currentEmployee.department}\n• Location: ${currentEmployee.location}\n• Manager: ${currentEmployee.manager}`;
     }
     
-    // Default responses
     const defaultResponses = [
       "I can help you with leave balances, salary information, company policies, and your profile details. What specific information do you need?",
       "I'm here to assist with HR-related queries. You can ask about your leaves, compensation, manager details, or company policies.",
@@ -188,7 +154,7 @@ const HRAssistant = () => {
   const handleSendMessage = () => {
     if (!inputMessage.trim()) return;
 
-    const userMessage: Message = {
+    const userMessage = {
       id: Date.now().toString(),
       text: inputMessage,
       sender: 'user',
@@ -198,9 +164,8 @@ const HRAssistant = () => {
     setMessages(prev => [...prev, userMessage]);
     setInputMessage('');
 
-    // Simulate bot response delay
     setTimeout(() => {
-      const botResponse: Message = {
+      const botResponse = {
         id: (Date.now() + 1).toString(),
         text: generateBotResponse(inputMessage),
         sender: 'bot',
@@ -210,15 +175,15 @@ const HRAssistant = () => {
     }, 1000);
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyPress = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
   };
 
-  const switchOrganization = (orgId: string) => {
-    const org = organizations.find(o => o.id === orgId)!;
+  const switchOrganization = (orgId) => {
+    const org = organizations.find(o => o.id === orgId);
     const employee = employees[orgId];
     
     setSelectedOrg(org);
@@ -235,7 +200,7 @@ const HRAssistant = () => {
 
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-100 flex items-center justify-center p-4">
+      <div className="h-screen bg-gradient-to-br from-blue-50 to-slate-100 flex items-center justify-center p-4">
         <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
           <div className="text-center mb-8">
             <Link to="/" className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700 mb-4">
@@ -279,12 +244,12 @@ const HRAssistant = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex">
+    <div className="h-screen bg-slate-50 flex overflow-hidden">
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-50 w-80 bg-white shadow-lg transform transition-transform duration-300 ${showSidebar ? 'translate-x-0' : '-translate-x-full'} lg:relative lg:translate-x-0`}>
+      <div className={`fixed inset-y-0 left-0 z-50 w-80 bg-white shadow-lg transform transition-transform duration-300 ${showSidebar ? 'translate-x-0' : '-translate-x-full'} lg:relative lg:translate-x-0 lg:flex lg:flex-col`}>
         <div className="flex flex-col h-full">
-          {/* Header */}
-          <div className="p-6 border-b border-slate-200">
+          {/* Sidebar Header */}
+          <div className="flex-shrink-0 p-4 border-b border-slate-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <div className="bg-blue-600 rounded-lg w-10 h-10 flex items-center justify-center">
@@ -305,58 +270,54 @@ const HRAssistant = () => {
           </div>
 
           {/* Employee Info */}
-          <div className="p-6 border-b border-slate-200">
-            <div className="flex items-center space-x-3 mb-4">
-              <div className="bg-slate-100 rounded-full w-12 h-12 flex items-center justify-center">
-                <User className="text-slate-600 w-6 h-6" />
+          <div className="flex-shrink-0 p-4 border-b border-slate-200">
+            <div className="flex items-center space-x-3 mb-3">
+              <div className="bg-slate-100 rounded-full w-10 h-10 flex items-center justify-center">
+                <User className="text-slate-600 w-5 h-5" />
               </div>
               <div>
-                <h2 className="font-semibold text-slate-800">{currentEmployee.name}</h2>
-                <p className="text-sm text-slate-500">{currentEmployee.role}</p>
+                <h2 className="font-semibold text-slate-800 text-sm">{currentEmployee.name}</h2>
+                <p className="text-xs text-slate-500">{currentEmployee.role}</p>
               </div>
             </div>
             
-            <div className="space-y-3">
-              <div className="flex items-center space-x-3 text-sm">
-                <Mail className="text-slate-400 w-4 h-4" />
-                <span className="text-slate-600">{currentEmployee.email}</span>
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2 text-xs">
+                <Mail className="text-slate-400 w-3 h-3" />
+                <span className="text-slate-600 truncate">{currentEmployee.email}</span>
               </div>
-              <div className="flex items-center space-x-3 text-sm">
-                <Briefcase className="text-slate-400 w-4 h-4" />
+              <div className="flex items-center space-x-2 text-xs">
+                <Briefcase className="text-slate-400 w-3 h-3" />
                 <span className="text-slate-600">{currentEmployee.department}</span>
               </div>
-              <div className="flex items-center space-x-3 text-sm">
-                <MapPin className="text-slate-400 w-4 h-4" />
-                <span className="text-slate-600">{currentEmployee.location}</span>
-              </div>
-              <div className="flex items-center space-x-3 text-sm">
-                <UserCheck className="text-slate-400 w-4 h-4" />
+              <div className="flex items-center space-x-2 text-xs">
+                <UserCheck className="text-slate-400 w-3 h-3" />
                 <span className="text-slate-600">{currentEmployee.manager}</span>
               </div>
             </div>
           </div>
 
           {/* Quick Stats */}
-          <div className="p-6 border-b border-slate-200">
-            <h3 className="font-semibold text-slate-800 mb-4">Quick Stats</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-blue-50 p-3 rounded-lg">
-                <div className="flex items-center space-x-2 mb-1">
-                  <Calendar className="text-blue-600 w-4 h-4" />
+          <div className="flex-shrink-0 p-4 border-b border-slate-200">
+            <h3 className="font-semibold text-slate-800 mb-3 text-sm">Quick Stats</h3>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-blue-50 p-2 rounded-lg">
+                <div className="flex items-center space-x-1 mb-1">
+                  <Calendar className="text-blue-600 w-3 h-3" />
                   <span className="text-xs text-blue-600 font-medium">Casual</span>
                 </div>
                 <div className="text-lg font-bold text-blue-800">{currentEmployee.leaveBalance.casual}</div>
               </div>
-              <div className="bg-green-50 p-3 rounded-lg">
-                <div className="flex items-center space-x-2 mb-1">
-                  <Clock className="text-green-600 w-4 h-4" />
+              <div className="bg-green-50 p-2 rounded-lg">
+                <div className="flex items-center space-x-1 mb-1">
+                  <Clock className="text-green-600 w-3 h-3" />
                   <span className="text-xs text-green-600 font-medium">Sick</span>
                 </div>
                 <div className="text-lg font-bold text-green-800">{currentEmployee.leaveBalance.sick}</div>
               </div>
-              <div className="bg-purple-50 p-3 rounded-lg col-span-2">
-                <div className="flex items-center space-x-2 mb-1">
-                  <DollarSign className="text-purple-600 w-4 h-4" />
+              <div className="bg-purple-50 p-2 rounded-lg col-span-2">
+                <div className="flex items-center space-x-1 mb-1">
+                  <DollarSign className="text-purple-600 w-3 h-3" />
                   <span className="text-xs text-purple-600 font-medium">CTC</span>
                 </div>
                 <div className="text-lg font-bold text-purple-800">₹{currentEmployee.salary.ctc.toLocaleString()}</div>
@@ -364,15 +325,15 @@ const HRAssistant = () => {
             </div>
           </div>
 
-          {/* Organization Switcher */}
-          <div className="flex-1 p-6">
-            <h3 className="font-semibold text-slate-800 mb-4">Switch Organization</h3>
+          {/* Switch Organization */}
+          <div className="flex-1 p-4 overflow-y-auto">
+            <h3 className="font-semibold text-slate-800 mb-3 text-sm">Switch Organization</h3>
             <div className="space-y-2">
               {organizations.map((org) => (
                 <button
                   key={org.id}
                   onClick={() => switchOrganization(org.id)}
-                  className={`w-full p-3 text-left rounded-lg transition-all duration-200 ${
+                  className={`w-full p-2 text-left rounded-lg transition-all duration-200 ${
                     selectedOrg.id === org.id
                       ? 'bg-blue-100 border border-blue-200 text-blue-800'
                       : 'bg-slate-50 hover:bg-slate-100 border border-transparent text-slate-700'
@@ -385,20 +346,20 @@ const HRAssistant = () => {
             </div>
           </div>
 
-          {/* Navigation */}
-          <div className="p-6 border-t border-slate-200">
+          {/* Footer Actions */}
+          <div className="flex-shrink-0 p-4 border-t border-slate-200">
             <Link
               to="/"
-              className="flex items-center space-x-3 w-full p-3 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors duration-200 mb-2"
+              className="flex items-center space-x-2 w-full p-2 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors duration-200 mb-2 text-sm"
             >
-              <Home className="w-5 h-5" />
+              <Home className="w-4 h-4" />
               <span>Back to Home</span>
             </Link>
             <button
               onClick={() => setIsLoggedIn(false)}
-              className="flex items-center space-x-3 w-full p-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
+              className="flex items-center space-x-2 w-full p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200 text-sm"
             >
-              <LogOut className="w-5 h-5" />
+              <LogOut className="w-4 h-4" />
               <span>Logout</span>
             </button>
           </div>
@@ -406,9 +367,9 @@ const HRAssistant = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <div className="bg-white border-b border-slate-200 p-4">
+        <div className="flex-shrink-0 bg-white border-b border-slate-200 p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <button
@@ -425,7 +386,7 @@ const HRAssistant = () => {
           </div>
         </div>
 
-        {/* Chat Messages */}
+        {/* Messages Area */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {messages.map((message) => (
             <div
@@ -439,7 +400,7 @@ const HRAssistant = () => {
                     : 'bg-white border border-slate-200 text-slate-800'
                 }`}
               >
-                <p className="whitespace-pre-line">{message.text}</p>
+                <p className="whitespace-pre-line text-sm">{message.text}</p>
                 <p className={`text-xs mt-2 ${
                   message.sender === 'user' ? 'text-blue-100' : 'text-slate-500'
                 }`}>
@@ -451,32 +412,32 @@ const HRAssistant = () => {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Chat Input */}
-        <div className="bg-white border-t border-slate-200 p-4">
-          <div className="flex space-x-4">
+        {/* Input Area */}
+        <div className="flex-shrink-0 bg-white border-t border-slate-200 p-4">
+          <div className="flex space-x-3">
             <div className="flex-1 relative">
               <textarea
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Ask about your leaves, salary, policies, or any HR query..."
-                className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm"
                 rows={1}
               />
             </div>
             <button
               onClick={handleSendMessage}
               disabled={!inputMessage.trim()}
-              className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 flex items-center space-x-2"
+              className="px-4 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 flex items-center space-x-2"
             >
-              <Send className="w-5 h-5" />
-              <span className="hidden sm:inline">Send</span>
+              <Send className="w-4 h-4" />
+              <span className="hidden sm:inline text-sm">Send</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Sidebar Overlay */}
+      {/* Mobile Overlay */}
       {showSidebar && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
