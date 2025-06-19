@@ -55,8 +55,19 @@ const Navbar = () => {
               Testimonials
             </ScrollLink>
 
+            <ScrollLink
+              to="plans"
+              smooth={true}
+              duration={600}
+              offset={-80}
+              onClick={() => setIsMenuOpen(false)} // close menu after click
+              className="px-2 cursor-pointer hover:text-blue-600 transition-all"
+            >
+              Plans
+            </ScrollLink>
+
             <Link
-              to="/assistant"
+              to="/login"
               className="ml-4 inline-flex items-center gap-2 bg-blue-600 text-white px-5 py-2.5 rounded-xl shadow-md hover:bg-blue-700 transition-all duration-200"
             >
               <span>Try Demo</span>
@@ -100,7 +111,7 @@ const Navbar = () => {
                 Testimonials
               </a>
               <Link
-                to="/assistant"
+                to="/login"
                 className="bg-blue-600 text-white px-5 py-2 rounded-xl w-fit hover:bg-blue-700 transition-all flex items-center gap-2 mt-2"
               >
                 <span>Try Demo</span>
