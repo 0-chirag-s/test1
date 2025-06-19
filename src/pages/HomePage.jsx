@@ -23,6 +23,7 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Spline from "@splinetool/react-spline";
 import { Link as ScrollLink } from "react-scroll";
+import SubscriptionPlans from "../components/SubscriptionPlans";
 
 const HomePage = () => {
   const stats = [
@@ -61,7 +62,7 @@ const HomePage = () => {
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
-                  to="/assistant"
+                  to="/login"
                   className="bg-blue-600 text-white px-8 py-4 rounded-xl hover:bg-blue-700 transition-all duration-200 flex items-center space-x-3 text-lg font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1"
                 >
                   <MessageCircle className="w-6 h-6" />
@@ -94,6 +95,7 @@ const HomePage = () => {
       {/* Testimonials Section */}
       <Testimonials />
 
+      <SubscriptionPlans />
       {/* Footer */}
       <Footer />
     </div>
